@@ -10,27 +10,27 @@ module.exports = function(app) {
     path: '/v1/search?format=json&apiKey=j3sp77bmf7ywymrdx78dq6bj'
   };
 
-  var callback = function(response) {
-    var str = '';
-    console.log('3');
-  //another chunk of data has been recieved, so append it to `str`
-     response.on('data', function (chunk) {
-      str += chunk;
-     });
+  var fazerGet = function(options, res){
+    http.get(options, function(response) {
+      var str = '';
+      console.log('3');
+      //another chunk of data has been recieved, so append it to `str`
+      response.on('data', function (chunk) {
+       str += chunk;
+      });
 
-  //the whole response has been recieved, so we just print it out here
-    response.on('end', function () {
-      console.log(str);
-    });
-  }
-
-  
+      //the whole response has been recieved, so we just print it out here
+      response.on('end', function () {
+        res.send(str);
+      });
+    }).end();  
+  }  
 
   var teste = function(req, res){
 
     options.path = options.path + '&query=' + req.product;      
     console.log('2', options.path);
-    http.get(options, callback).end();  
+    fazerGet(options, res);
   };
 
   app.param('product', function(req, res, next, product) {  
