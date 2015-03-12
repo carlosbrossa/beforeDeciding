@@ -10,27 +10,64 @@ module.exports = function(app) {
     path: '/v1/search?format=json&apiKey=j3sp77bmf7ywymrdx78dq6bj'
   };
 
-  var fazerGet = function(options, res){
+  var optionsReview = {
+    host: 'api.walmartlabs.com',
+    path: '/v1/reviews/itemId?format=json&apiKey=j3sp77bmf7ywymrdx78dq6bj'
+  };
+
+  var buscarProduto = function(options, res){
     http.get(options, function(response) {
       var str = '';
-      console.log('3');
+
       //another chunk of data has been recieved, so append it to `str`
       response.on('data', function (chunk) {
        str += chunk;
       });
 
-      //the whole response has been recieved, so we just print it out here
+      //the whole response has been recieved, so we just print it out affiliateAddToCartUrle
       response.on('end', function () {
-        res.send(str);
+        var objProduct = new Object();
+        str = JSON.parse(str);        
+        objProduct.itemId = str.items[0].itemId;
+        objProduct.name = str.items[0].name;
+        objProduct.shortDescription = str.items[0].shortDescription;
+        objProduct.thumbnailImage = str.items[0].thumbnailImage;
+        objProduct.productUrl = str.items[0].productUrl;
+        objProduct.affiliateAddToCartUrl = str.items[0].affiliateAddToCartUrl;
+        
+        console.log('objReview', objProduct);  
+        buscarReview(res, objProduct);
+
+        //res.send(objReview);
       });
     }).end();  
-  }  
+  }; 
+
+  var buscarReview = function(res, objProduct){
+    optionsReview.path = optionsReview.path.replace('itemId', objProduct.itemId);
+    http.get(optionsReview, function(response) {
+
+      var str = '';
+
+      //another chunk of data has been recieved, so append it to `str`
+      response.on('data', function (chunk) {
+       str += chunk;
+      });
+
+      response.on('end', function () {        
+        str = JSON.parse(str);
+        objProduct.reviews = str.reviews;
+
+        res.send(objProduct);
+      });
+
+    }).end();  
+    
+  };
 
   var teste = function(req, res){
-
-    options.path = options.path + '&query=' + req.product;      
-    console.log('2', options.path);
-    fazerGet(options, res);
+    options.path = options.path + '&query=' + req.product;        
+    buscarProduto(options, res);
   };
 
   app.param('product', function(req, res, next, product) {  
