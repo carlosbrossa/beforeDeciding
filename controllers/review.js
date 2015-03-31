@@ -66,7 +66,8 @@ module.exports = function(app) {
   };
 
   var teste = function(req, res){
-    options.path = options.path + '&query=' + req.product;        
+    options.path = options.path + '&query=' + req.product;
+    console.log(options.path);        
     buscarProduto(options, res);
   };
 
