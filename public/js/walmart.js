@@ -88,10 +88,12 @@ function getReviewsProduct(data){
         var cellProductUrl = document.createElement("td"); 
 
         cellProductLink = document.createElement('a');
-        cellProductLink.setAttribute('href',data.productUrl);
+        //cellProductLink.setAttribute('href',data.productUrl);
         cellProductLink.setAttribute("target", "_self");
         cellProductLink.setAttribute("id", "teste" + i);
-        cellProductUrl.appendChild(cellProductLink);   
+        cellProductLink.innerHTML = "<a href=" + data.productUrl + ">I've decided</a>";
+        cellProductUrl.appendChild(cellProductLink);
+   
         row.appendChild(cellProductUrl);
 
         //row added to end of table body
