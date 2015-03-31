@@ -4,28 +4,30 @@ $( "#target" ).submit(function( event ) {
    // clean div welcome
    $( "#welcomeDiv" ).remove();
 
+   var search = $("#busca").val();
+
    //https://beforedeciding.herokuapp.com/review/iphone
    $.ajax({
-   		url: "https://api.walmartlabs.com/v1/search",
-   		data: { 
-      query: $("#busca").val(), apiKey: "j3sp77bmf7ywymrdx78dq6bj" },
+   		url: "http://localhost:5600/review/" + search,
+   		//data: { 
+      //query: $("#busca").val(), apiKey: "j3sp77bmf7ywymrdx78dq6bj" },
       dataType: "jsonp",
       crossDomain: true,
       type: "GET",
       async: false, 
       success: function(data){
-        document.getElementById("titleProduct").innerHTML = data.query;
-        document.getElementById("descProduct").innerHTML = data.items[0].name;
-        document.getElementById("imgProduct").src = data.items[0].thumbnailImage;
-        var itemId = data.items[0].itemId;
-          getReviewsProduct(itemId);
-        },
+        document.getElementById("titleProduct").innerHTML = data.name;
+        document.getElementById("descProduct").innerHTML = data.shortDescription;
+        document.getElementById("imgProduct").src = data.thumbnailImage;
+        //var itemId = data.items[0].itemId;
+          getReviewsProduct(data);
+      
+      },
 	});
 })
 
 
-function getReviewsProduct(itemId){
-    console.log(itemId);
+function getReviewsProduct(data){
 
     //body reference 
     var body = document.getElementsByTagName("bodyIndex")[0];
@@ -36,17 +38,17 @@ function getReviewsProduct(itemId){
     var tblHeading = document.getElementById("tblReviewsHeading");
 
 
-    $.getJSON('https://jsonp.nodejitsu.com/?url=https://api.walmartlabs.com/v1/reviews/' + itemId  +'?apiKey=j3sp77bmf7ywymrdx78dq6bj&format=json', function(data){  
+    //$.getJSON('https://jsonp.nodejitsu.com/?url=https://api.walmartlabs.com/v1/reviews/' + itemId  +'?apiKey=j3sp77bmf7ywymrdx78dq6bj&format=json', function(data){  
 
       // clean and reset table
       tblHeading.innerHTML = "";
       tbl.innerHTML = "";
       tblBody.innerHTML = "";
       var rowHeding = document.createElement("tr");
-      var titles = ['author','review','rating'];
+      var titles = ['author','review','rating',"offer"];
 
       // cells creation ( heading )
-      for (k = 0; k < 3; k ++) {
+      for (k = 0; k < titles.length; k ++) {
 
           var cellHead = document.createElement("td"); 
           var cellTextHead = document.createTextNode(titles[k]); 
@@ -82,6 +84,15 @@ function getReviewsProduct(itemId){
         cellRating.appendChild(cellTextRating);
         row.appendChild(cellRating);
 
+        // set link
+        var cellProductUrl = document.createElement("td"); 
+
+        cellProductLink = document.createElement('a');
+        cellProductLink.setAttribute('href',data.productUrl);
+        cellProductLink.setAttribute("target", "_self");
+        cellProductLink.setAttribute("id", "teste" + i);
+        cellProductUrl.appendChild(cellProductLink);   
+        row.appendChild(cellProductUrl);
 
         //row added to end of table body
         tblBody.appendChild(row);
@@ -92,8 +103,8 @@ function getReviewsProduct(itemId){
       tbl.appendChild(tblBody);
       // put <table> in the <body>
       body.appendChild(tbl);
-
-    });
+     
+    //});
 }
 
 
