@@ -58,7 +58,8 @@ module.exports = function(app) {
         str = JSON.parse(str);
         objProduct.reviews = str.reviews;
 
-        res.send(objProduct);
+        //res.send(objProduct);
+	res.jsonp(objProduct);
       });
 
     }).end();  
