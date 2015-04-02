@@ -7,8 +7,9 @@ $( "#target" ).submit(function( event ) {
    var search = $("#busca").val();
 
    //https://beforedeciding.herokuapp.com/review/iphone
+   //http://localhost:5600/review/"
    $.ajax({
-   		url: "http://localhost:5600/review/" + search,
+   		url: "http://beforedeciding.herokuapp.com/review/" + search,
    		//data: { 
       //query: $("#busca").val(), apiKey: "j3sp77bmf7ywymrdx78dq6bj" },
       dataType: "jsonp",
