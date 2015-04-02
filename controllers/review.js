@@ -12,18 +12,15 @@ module.exports = function(app) {
   var prodAdv = aws.createProdAdvClient(accessKeyId, secretAccessKey, associateTag);
 
 
-   //The url we want is: 'www.random.org/integers/?num=1&min=1&max=10&col=1&base=10&format=plain&rnd=new'
-  var options = {
-    host: 'api.walmartlabs.com',
-    path: '/v1/search?format=json&apiKey=j3sp77bmf7ywymrdx78dq6bj'
-  };
+  var buscarProduto = function(product, res){
 
-  var optionsReview = {
-    host: 'api.walmartlabs.com',
-    path: '/v1/reviews/itemId?format=json&apiKey=j3sp77bmf7ywymrdx78dq6bj'
-  };
+    //The url we want is: 'www.random.org/integers/?num=1&min=1&max=10&col=1&base=10&format=plain&rnd=new'
+    var options = {
+      host: 'api.walmartlabs.com',
+      path: '/v1/search?format=json&apiKey=j3sp77bmf7ywymrdx78dq6bj'
+    };
+    options.path = options.path + '&query=' + product;
 
-  var buscarProduto = function(options, res){
     http.get(options, function(response) {
       var str = '';
 
@@ -52,6 +49,10 @@ module.exports = function(app) {
   }; 
 
   var buscarReview = function(res, objProduct){
+    var optionsReview = {
+      host: 'api.walmartlabs.com',
+      path: '/v1/reviews/itemId?format=json&apiKey=j3sp77bmf7ywymrdx78dq6bj'
+    };
     optionsReview.path = optionsReview.path.replace('itemId', objProduct.itemId);
     http.get(optionsReview, function(response) {
 
@@ -75,9 +76,9 @@ module.exports = function(app) {
   };
 
   var teste = function(req, res){
-    options.path = options.path + '&query=' + req.product;
-    console.log(options.path);        
-    buscarProduto(options, res);
+    //options.path = options.path + '&query=' + req.product;
+    //console.log(options.path);        
+    buscarProduto(req.product, res);
   };
 
   var amazon = function(req, res){
