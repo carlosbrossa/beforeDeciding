@@ -14,6 +14,7 @@ var app = express();
 // Configuration
 
 app.use(bodyParser.json());
+app.use(express.static(__dirname + '/public'));
 /*
   app.configure(function(){
   app.set('views', __dirname + '/views');
