@@ -37,8 +37,8 @@ module.exports = function(app) {
         objProduct.name = str.items[0].name;
         objProduct.shortDescription = str.items[0].shortDescription;
         objProduct.thumbnailImage = str.items[0].thumbnailImage;
-        objProduct.productUrl = str.items[0].productUrl;
-        objProduct.affiliateAddToCartUrl = str.items[0].affiliateAddToCartUrl;
+        objProduct.productUrl = str.items[0].productUrl + '&country=US';
+        objProduct.affiliateAddToCartUrl = str.items[0].affiliateAddToCartUrl + '&country=US';
         
         console.log('objReview', objProduct);  
         buscarReview(res, objProduct);
