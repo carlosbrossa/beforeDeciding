@@ -7,14 +7,19 @@ module.exports = function(app) {
     next();
   });
 
-  var buscarProduto = function(product, res){
+  var buscarProduto = function(req, res){
     
     var options = {
       host: 'api.walmartlabs.com',
-      path: '/v1/search?format=json&apiKey=j3sp77bmf7ywymrdx78dq6bj'
+      path: '/v1/search?format=json&apiKey=j3sp77bmf7ywymrdx78dq6bj&sort=customerRating&order=desc'
     };
-    options.path = options.path + '&query=' + product;    
+    options.path = options.path + '&query=' + req.product;    
 
+    var start = req.param('start');
+    var numItems = req.param('numItems');    
+    if(start) options.path = options.path + '&start=' + start;    
+    if(numItems) options.path = options.path + '&numItems=' + numItems;        
+    
     http.get(options, function(response) {
       var str = '';
 
@@ -25,7 +30,7 @@ module.exports = function(app) {
       response.on('end', function () {
       	str = JSON.parse(str);
       	var items = str.items;      	
-      	var listProducts = new Array();        
+      	var listProducts = new Array();              
 
       	for(var i = 0; i < items.length; i++){	
 	        var objProduct = new Object();	        
@@ -37,7 +42,14 @@ module.exports = function(app) {
 	        objProduct.affiliateAddToCartUrl = items[i].affiliateAddToCartUrl + '&country=US';	        
 	        listProducts.push(objProduct);        
         }        
-        res.send(listProducts);
+
+        var objectReturn = new Object();
+        objectReturn.totalResults = str.totalResults;
+        objectReturn.start = str.start;
+        objectReturn.numItems = str.numItems;
+        objectReturn.items = listProducts;
+        res.send(objectReturn);
+
       });
     }).end();  
   }; 
@@ -45,7 +57,7 @@ module.exports = function(app) {
 
   var ProductController = {
     search : function(req, res) {      
-      buscarProduto(req.product, res);    
+      buscarProduto(req, res);    
     }
   }
   return ProductController;
