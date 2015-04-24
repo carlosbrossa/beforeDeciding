@@ -48,7 +48,8 @@ module.exports = function(app) {
         objectReturn.start = str.start;
         objectReturn.numItems = str.numItems;
         objectReturn.items = listProducts;
-        res.send(objectReturn);
+        res.jsonp(objectReturn.items);
+        //res.send(objectReturn);
 
       });
     }).end();  

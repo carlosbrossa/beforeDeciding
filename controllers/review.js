@@ -19,7 +19,7 @@ module.exports = function(app) {
 
       response.on('end', function () {        
         str = JSON.parse(str);        
-	      res.json(str.reviews);
+	      res.jsonp(str.reviews);
       });
 
     }).end();  
