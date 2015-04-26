@@ -1,6 +1,7 @@
 module.exports = function(app) {
 
   var http = require('http');
+  var cheerio = require('cheerio');
 
   app.param('product', function(req, res, next, product) {  
     req.product = product;
@@ -77,13 +78,74 @@ module.exports = function(app) {
       });
 
       response.on('end', function () {        
-        str = JSON.parse(str);        
-        res.json(str);
+        str = JSON.parse(str);                
+        scrapingReview(str, res);
+        //res.json(str);
       });
 
     }).end();  
     
-  }; 
+  };
+
+  var scrapingBuscape = function(url, res){
+    var optionsBuscape = {
+      host: 'www.buscape.com.br',
+      path: ''
+    };
+
+    var path = url.replace('http://www.buscape.com.br', '');
+    optionsBuscape.path = path.concat('?#avaliacoes');    
+
+    http.get(optionsBuscape, function(response) {
+
+      var str = '';    
+      response.on('data', function (chunk) {
+       str += chunk;
+      });
+
+      response.on('end', function () {                
+        parserHtml(str, res);    
+      });
+
+    }).end();  
+  } 
+
+  var parserHtml = function(html, res){
+    var $ = cheerio.load(html, {
+      normalizeWhitespace: false,
+      xmlMode: false,
+      decodeEntities: true
+    });
+
+    var commentsJson = new Array();
+    $('.descr').each(function(i, elem) {      
+      var comment = new Object();
+      comment.comment =  $(this).text();
+      commentsJson.push(comment);
+    });
+    
+
+    /**var arrayComments = resultfinal.split('<p class="descr">');
+    var commentsJson = new Array();
+
+    for (var i = arrayComments.length - 1; i >= 0; i--) {
+      var comment = new Object();
+      comment.comment =  arrayComments[i].replace('</p>', '');
+      commentsJson.push(comment);
+    };**/
+
+    res.json(commentsJson);
+
+  }
+
+  var scrapingReview = function(str, res){
+
+    var teste = str.product[0].product.links[0].link.url;
+    var index = teste.split('?');
+    var urlFinal = index[0];     
+    scrapingBuscape(urlFinal, res);
+
+  };
 
 
   var ProductController = {
