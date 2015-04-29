@@ -1,12 +1,15 @@
 $( document ).ready(function() {
   console.log("ok");
-  var product = getURLParameter(product);
+  var product = getParameterByName('product');
   getProduct(product);
 });
 
 
-function getURLParameter(url, name) {
-    return (RegExp(name + '=' + '(.+?)(&|$)').exec(url)||[,null])[1];
+function getParameterByName(name) {
+    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+        results = regex.exec(location.search);
+    return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
 }
 
 

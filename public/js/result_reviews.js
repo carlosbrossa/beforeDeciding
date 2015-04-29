@@ -1,11 +1,14 @@
 $( document ).ready(function() {
-  var review = getURLParameter(review);
+  var review = getParameterByName('review');
   console.log(review);
   getReviews(review);
 });
 
-function getURLParameter(url, name) {
-    return (RegExp(name + '=' + '(.+?)(&|$)').exec(url)||[,null])[1];
+function getParameterByName(name) {
+    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+        results = regex.exec(location.search);
+    return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
 }
 
 
@@ -59,7 +62,7 @@ function getReviews(review){
         //document.getElementById("descProduct").innerHTML = data[0].shortDescription;
         //document.getElementById("imgProduct").src = data[0].thumbnailImage;
         //var itemId = data.items[0].itemId;
-        //setReviewsTable(data);
+        setReviewsTable(data);
       },
   });
 }
