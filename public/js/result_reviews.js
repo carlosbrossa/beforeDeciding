@@ -29,9 +29,6 @@ function getParameterByName(name) {
 $( "#target" ).submit(function( event ) {
    event.preventDefault();	
 
-   // clean div welcome
-   $( "#welcomeDiv" ).remove();
-
    var search = $("#busca").val();
 
   getReviews(search);
