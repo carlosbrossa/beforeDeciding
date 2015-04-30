@@ -94,7 +94,7 @@ function getReviewsProduct(data){
       cellDescReviewLink.setAttribute('href',data[i].productUrl);
       cellDescReviewLink.setAttribute("target", "_blank");
       cellDescReviewLink.setAttribute("id", "descReview_" + i);
-      cellDescReviewLink.innerHTML = "<a href=http://localhost:5600/resultreviews.html?review=" + data[i].itemId + ">" +  data[i].name + "</a>";
+      cellDescReviewLink.innerHTML = "<a href=http://localhost:5600/resultreviews.html?review=" + data[i].itemId + "&producturl=" + data[i].productUrl + ">" +  data[i].name + "</a>";
       cellDescReview.appendChild(cellDescReviewLink);
       row.appendChild(cellDescReview);
 

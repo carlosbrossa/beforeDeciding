@@ -1,7 +1,21 @@
 $( document ).ready(function() {
   var review = getParameterByName('review');
-  console.log(review);
+  var producturl = getParameterByName('producturl');
   getReviews(review);
+
+
+  $('#btn_havent_decided').click(function(){
+    parent.history.back(); 
+    return false;                
+  });
+
+  $('#btn_decided').click(function(){
+    window.open(producturl, '_blank');
+    return false;                
+  });
+
+
+
 });
 
 function getParameterByName(name) {
@@ -22,27 +36,8 @@ $( "#target" ).submit(function( event ) {
 
   getReviews(search);
 
-   //https://beforedeciding.herokuapp.com/review/iphone
-   //http://localhost:5600/review/"
- //   $.ajax({
- //      url: "http://localhost:5600/review/38456902",
- //   		//url: "http://localhost:5600/review/38456902" + search,
- //   		//data: { 
- //      //query: $("#busca").val(), apiKey: "j3sp77bmf7ywymrdx78dq6bj" },
- //      dataType: "jsonp",
- //      crossDomain: true,
- //      type: "GET",
- //      async: false, 
- //      success: function(data){
- //        document.getElementById("titleProduct").innerHTML = data[0].name;
- //        document.getElementById("descProduct").innerHTML = data[0].shortDescription;
- //        document.getElementById("imgProduct").src = data[0].thumbnailImage;
- //        //var itemId = data.items[0].itemId;
- //          getReviewsProduct(data);
-      
- //      },
-	// });
 })
+
 
 function getReviews(review){
 
@@ -58,7 +53,7 @@ function getReviews(review){
       async: false, 
       success: function(data){
         console.log(data);
-        //document.getElementById("titleProduct").innerHTML = data[0].name;
+        document.getElementById("titleProduct").innerHTML = data[0].name;
         //document.getElementById("descProduct").innerHTML = data[0].shortDescription;
         //document.getElementById("imgProduct").src = data[0].thumbnailImage;
         //var itemId = data.items[0].itemId;
@@ -90,7 +85,7 @@ function setReviewsTable(data){
       tbl.innerHTML = "";
       tblBody.innerHTML = "";
       var rowHeding = document.createElement("tr");
-      var titles = ['author','review','rating',"offer"];
+      var titles = ['author','review','rating'];
 
       // cells creation ( heading )
       for (k = 0; k < titles.length; k ++) {
@@ -130,16 +125,16 @@ function setReviewsTable(data){
         row.appendChild(cellRating);
 
         // set link
-        var cellProductUrl = document.createElement("td"); 
+        //var cellProductUrl = document.createElement("td"); 
 
-        cellProductLink = document.createElement('a');
+        //cellProductLink = document.createElement('a');
         //cellProductLink.setAttribute('href',data.productUrl);
-        cellProductLink.setAttribute("target", "_self");
-        cellProductLink.setAttribute("id", "teste" + i);
-        cellProductLink.innerHTML = "<a href=" + data[i].productUrl + ">I've decided</a>";
-        cellProductUrl.appendChild(cellProductLink);
+        // cellProductLink.setAttribute("target", "_self");
+        // cellProductLink.setAttribute("id", "teste" + i);
+        // cellProductLink.innerHTML = "<a href=" + data[i].productUrl + ">I've decided</a>";
+        // cellProductUrl.appendChild(cellProductLink);
    
-        row.appendChild(cellProductUrl);
+        //row.appendChild(cellProductUrl);
 
         //row added to end of table body
         tblBody.appendChild(row);

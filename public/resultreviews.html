@@ -35,13 +35,12 @@
     <!-- Fixed navbar -->
     <nav class="navbar navbar-default navbar-fixed-top">
       <div class="container-fluid">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
+        
+        <!-- icon e texto da brand no cabecalho-->
+        <div class="navbar-header">        
+          <a class="navbar-brand" href="index.html">
+            <img class="icon-head" src="img/icon_bd.svg" alt="instagram before deciding"></img>
+          </a>
           <a class="navbar-brand" href="index.html">Before Deciding</a>
         </div>
 
@@ -132,6 +131,9 @@
               <tbody id="tblReviewsBody"></tbody>     
             </table>
           </div>
+          <!-- Contextual button for informational alert messages -->
+          <button id="btn_havent_decided" type="submit" class="btn btn-info pull-left">I have't decided</button>
+          <button id="btn_decided" type="button" class="btn btn-success pull-right">I've decided</button>
         </div>
       </div>
       <!--/ .info about review -->
