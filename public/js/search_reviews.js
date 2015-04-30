@@ -16,9 +16,6 @@ function getParameterByName(name) {
 $( "#target" ).submit(function( event ) {
    event.preventDefault();	
 
-    // clean div welcome
-    $( "#welcomeDiv" ).remove();
-
     var search = $("#busca").val();
 
     getProduct(search);
@@ -59,7 +56,7 @@ function getReviewsProduct(data){
     tbl.innerHTML = "";
     tblBody.innerHTML = "";
     var rowHeding = document.createElement("tr");
-    var titles = ['product','description','source','total reviews'];
+    var titles = ['product','description','source','reviews'];
 
     // cells creation ( heading )
     for (k = 0; k < titles.length; k ++) {
