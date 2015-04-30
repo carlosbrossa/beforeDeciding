@@ -6,7 +6,7 @@ $( "#target" ).submit(function( event ) {
 
    var search = $("#busca").val();
 
-   window.location.replace("http://localhost:5600/searchreviews.html?product=" + search);
+   window.location.replace("/searchreviews.html?product=" + search);
 
 })
 
